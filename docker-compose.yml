@@ -27,7 +27,10 @@ services:
 
   webservice:
     image: phipex/webservice:0.0.1-SNAPSHOT
- #   ports:
+    environment:
+      - _JAVA_OPTIONS=-Xmx1024m -Xms512m
+      - SPRING_PROFILES_ACTIVE=prod
+   #   ports:
  #     - "8081:80"
     labels:
 #      - "traefik.http.routers.webservice.rule=Host(`webservice.docker.localhost`) || (Host(`localhost`) && Path(`/webservice`))"
@@ -35,4 +38,8 @@ services:
       - "traefik.http.routers.webservice.rule=Host(`webservice.docker.localhost`) || (Path(`/webservice`))"
       - "traefik.http.routers.webservice.service=webservice@docker"
       - "traefik.http.services.webservice.loadbalancer.server.port=8081"
-  
+
+  redis:
+    image: redis:5.0.6
+    ports:
+      - '6379:6379'
